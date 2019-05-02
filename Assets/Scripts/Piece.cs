@@ -8,6 +8,12 @@ public class Piece : MonoBehaviour
     private bool dragging;
     private Vector3 originalPosition;
     private bool moving;
+    private Board board;
+
+    private void Start()
+    {
+        board = GameObject.Find("Board").GetComponent<Board>();
+    }
 
     private void Update()
     {
@@ -23,7 +29,7 @@ public class Piece : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!moving)
+        if (!moving && player == 1)
         {
             dragging = true;
             originalPosition = transform.position;
@@ -35,13 +41,18 @@ public class Piece : MonoBehaviour
         if (dragging)
         {
             dragging = false;
-            moving = true;
-            StartCoroutine(MoveToOriginalPosition());
+
+            if (board.CanDropHere(transform.position, out var dropIndex))
+                board.Drop(dropIndex, player, gameObject);
+            else
+                StartCoroutine(MoveToOriginalPosition());
         }
     }
 
     private IEnumerator MoveToOriginalPosition()
     {
+        moving = true;
+
         var startPos = transform.position;
         var startTime = Time.time;
         var duration = 0.5f;
