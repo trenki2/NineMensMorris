@@ -204,7 +204,7 @@ public class MillGame
         }
         else if (State == MillState.TakingStones)
         {
-            if (Board[action.Pos0] != OtherPlayer)
+            if (Board[action.Pos0] != OtherPlayer || CheckForMill(action.Pos0))
                 return false;
         }
 
@@ -223,7 +223,7 @@ public class MillGame
             Board[action.Pos1] = Board[action.Pos0];
             Board[action.Pos0] = 0;
 
-            if (CheckForMill(action.Pos0))
+            if (CheckForMill(action.Pos1))
             {
                 lastState = State;
                 State = MillState.TakingStones;

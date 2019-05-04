@@ -41,10 +41,15 @@ public class Stone : MonoBehaviour
         if (game.State == MillState.TakingStones && player == 2)
         {
             var result = board.GetNearestPosition(transform.position);
-            var stone = board.Stones[result.boardPos];
-            board.Stones[result.boardPos] = null;
-            Destroy(stone);
-            game.Execute(new MillAction(result.boardPos));
+            var action = new MillAction(result.boardPos);
+
+            if (game.CanExecute(action))
+            {
+                var stone = board.Stones[result.boardPos];
+                board.Stones[result.boardPos] = null;
+                Destroy(stone);
+                game.Execute(action);
+            }
         }
         else if (player == 1 && game.State != MillState.TakingStones)
         {

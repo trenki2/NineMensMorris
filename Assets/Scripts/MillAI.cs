@@ -44,7 +44,7 @@ public class MillAI : MonoBehaviour
         switch (state)
         {
             case State.Begin:
-                if (board.Game.Player == 2)
+                if (!game.IsGameOver && game.Player == player)
                 {
                     CalculateAction();
                     state = State.WaitForResult;
@@ -92,6 +92,7 @@ public class MillAI : MonoBehaviour
         board.Stones[action.Pos0] = null;
         Destroy(stone);
         game.Execute(action);
+        Debug.Assert(game.Board[action.Pos0] == 0);
 
         state = State.Begin;
 
@@ -121,6 +122,7 @@ public class MillAI : MonoBehaviour
         board.Stones[action.Pos0] = null;
         board.Stones[action.Pos1] = stone;
         game.Execute(action);
+        Debug.Assert(game.Board[action.Pos1] == player);
 
         state = State.Begin;
     }
@@ -147,6 +149,7 @@ public class MillAI : MonoBehaviour
         stone.transform.position = targetPos;
         board.Stones[action.Pos0] = stone;
         game.Execute(action);
+        Debug.Assert(game.Board[action.Pos0] == player);
 
         state = State.Begin;
     }
@@ -175,7 +178,8 @@ public class AI
         Debug.Log("CalculateAction start");
 
         var key = new object();
-        var children = game.Children.ToArray();
+        var random = new System.Random();
+        var children = game.Children.OrderBy(x => random.Next()).ToArray();
         var bestResult = float.NegativeInfinity;
         var bestAction = children[0].LastAction;
 
@@ -183,7 +187,7 @@ public class AI
 
         Parallel.For(0, children.Length, (i) =>
         {
-            var result = AlphaBeta(children[i], 3, float.NegativeInfinity, float.PositiveInfinity, game.Player);
+            var result = AlphaBeta(children[i], 4, float.NegativeInfinity, float.PositiveInfinity, game.Player);
             lock (key)
             {
                 if (result > bestResult)
