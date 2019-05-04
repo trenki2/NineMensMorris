@@ -53,6 +53,9 @@ public class Stone : MonoBehaviour
         }
         else if (player == 1 && game.State != MillState.TakingStones)
         {
+            if (game.State == MillState.PlacingStones && boardPos != -1)
+                return;
+
             dragging = true;
             originalPosition = transform.position;
         }

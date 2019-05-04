@@ -179,7 +179,7 @@ public class AI
 
     public MillAction CalculateAction(MillGame game)
     {
-        var key = new object();
+        var locker = new object();
         var children = game.Children.OrderBy(x => random.Next()).ToArray();
         var bestResult = float.NegativeInfinity;
         var bestAction = children[0].LastAction;
@@ -189,7 +189,7 @@ public class AI
         Parallel.For(0, children.Length, (i) =>
         {
             var result = AlphaBeta(children[i], 4, float.NegativeInfinity, float.PositiveInfinity, game.Player);
-            lock (key)
+            lock (locker)
             {
                 if (result > bestResult)
                 {

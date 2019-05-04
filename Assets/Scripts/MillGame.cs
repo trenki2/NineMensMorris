@@ -289,21 +289,17 @@ public class MillGame
         var scores = new int[2];
 
         for (int i = 0; i < 2; i++)
-        {
-            scores[i] = CountMills(i) * 3;
             scores[i] += AvailableStones[i] + Board.Where(x => x == i + 1).Count();
-            scores[i] += IsGameOver ? (Winner == player ? 100 : -100) : 0;
-        }
 
         return player == 2 ? scores[1] - scores[0] : scores[0] - scores[1];
     }
 
-    private int CountMills(int player)
+    public int CountMills(int player)
     {
         var count = 0;
         foreach (var m in mills)
         {
-            if (m.Item1 == player && m.Item2 == player && m.Item3 == player)
+            if (Board[m.Item1] == player && Board[m.Item2] == player && Board[m.Item3] == player)
                 count++;
         }
         return count;
