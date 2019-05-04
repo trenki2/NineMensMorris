@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SetResolution : MonoBehaviour
 {
-    void Update()
+    void Start()
     {
         Screen.SetResolution(960, 540, false);
     }
