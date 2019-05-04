@@ -5,14 +5,10 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    private class BoardElement
-    {
-        public int Player { get; set; }
-        public GameObject GameObject { get; set; }
-        public Vector3 Position { get; set; }
-    }
+    public MillGame Game { get; private set; } = new MillGame();
 
-    private List<BoardElement> elements = new List<BoardElement>();
+    public GameObject[] Stones = new GameObject[24];
+    public Vector3[] Positions = new Vector3[24];
 
     private void Start()
     {
@@ -20,74 +16,49 @@ public class Board : MonoBehaviour
         var pos1 = GameObject.Find("BoardPos1").transform.position;
         var pos2 = GameObject.Find("BoardPos2").transform.position;
 
-        elements.Add(new BoardElement { Position = pos0 });
-        elements.Add(new BoardElement { Position = new Vector3(0, 0, pos0.z) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos0.x, 0, pos0.z) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos0.x, 0, 0) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos0.x, 0, -pos0.z) });
-        elements.Add(new BoardElement { Position = new Vector3(0, 0, -pos0.z) });
-        elements.Add(new BoardElement { Position = new Vector3(pos0.x, 0, pos0.z) });
-        elements.Add(new BoardElement { Position = new Vector3(pos0.x, 0, 0) });
+        Positions[0] = pos0;
+        Positions[1] = new Vector3(0, 0, pos0.z);
+        Positions[2] = new Vector3(-pos0.x, 0, pos0.z);
+        Positions[3] = new Vector3(-pos0.x, 0, 0);
+        Positions[4] = new Vector3(-pos0.x, 0, -pos0.z);
+        Positions[5] = new Vector3(0, 0, -pos0.z);
+        Positions[6] = new Vector3(pos0.x, 0, -pos0.z);
+        Positions[7] = new Vector3(pos0.x, 0, 0);
 
-        elements.Add(new BoardElement { Position = pos1 });
-        elements.Add(new BoardElement { Position = new Vector3(0, 0, pos1.z) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos1.x, 0, pos1.z) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos1.x, 0, 0) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos1.x, 0, -pos1.z) });
-        elements.Add(new BoardElement { Position = new Vector3(0, 0, -pos1.z) });
-        elements.Add(new BoardElement { Position = new Vector3(pos1.x, 0, pos1.z) });
-        elements.Add(new BoardElement { Position = new Vector3(pos1.x, 0, 0) });
+        Positions[8] = pos1;
+        Positions[9] = new Vector3(0, 0, pos1.z);
+        Positions[10] = new Vector3(-pos1.x, 0, pos1.z);
+        Positions[11] = new Vector3(-pos1.x, 0, 0);
+        Positions[12] = new Vector3(-pos1.x, 0, -pos1.z);
+        Positions[13] = new Vector3(0, 0, -pos1.z);
+        Positions[14] = new Vector3(pos1.x, 0, -pos1.z);
+        Positions[15] = new Vector3(pos1.x, 0, 0);
 
-        elements.Add(new BoardElement { Position = pos2 });
-        elements.Add(new BoardElement { Position = new Vector3(0, 0, pos2.z) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos2.x, 0, pos2.z) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos2.x, 0, 0) });
-        elements.Add(new BoardElement { Position = new Vector3(-pos2.x, 0, -pos2.z) });
-        elements.Add(new BoardElement { Position = new Vector3(0, 0, -pos2.z) });
-        elements.Add(new BoardElement { Position = new Vector3(pos2.x, 0, pos2.z) });
-        elements.Add(new BoardElement { Position = new Vector3(pos2.x, 0, 0) });
+        Positions[16] = pos2;
+        Positions[17] = new Vector3(0, 0, pos2.z);
+        Positions[18] = new Vector3(-pos2.x, 0, pos2.z);
+        Positions[19] = new Vector3(-pos2.x, 0, 0);
+        Positions[20] = new Vector3(-pos2.x, 0, -pos2.z);
+        Positions[21] = new Vector3(0, 0, -pos2.z);
+        Positions[22] = new Vector3(pos2.x, 0, -pos2.z);
+        Positions[23] = new Vector3(pos2.x, 0, 0);
     }
 
-    public void Drop(int dropIndex, int player, GameObject piece)
-    {
-        if (dropIndex < 0 || dropIndex > elements.Count || elements[dropIndex].Player != 0)
-            throw new ArgumentException("Invalid dropIndex");
-
-        if (player < 1 || player > 2)
-            throw new ArgumentException("Invalid player");
-
-        if (piece == null)
-            throw new ArgumentNullException("GameObject is null");
-
-        var pos = elements[dropIndex].Position;
-        piece.transform.position = new Vector3(pos.x, 0.2f, pos.z);
-
-        elements[dropIndex].Player = player;
-        elements[dropIndex].GameObject = piece;
-    }
-
-    public bool CanDropHere(Vector3 position, out int dropIndex)
+    public (Vector3 pos, int boardPos, float dist) GetNearestPosition(Vector3 pos)
     {
         float bestDist = float.MaxValue;
-        int bestIndex = -1;
+        int bestPos = 0;
 
-        for (int i = 0; i < elements.Count; i++)
+        for (int i = 0; i < Positions.Length; i++)
         {
-            var dist = Vector3.Distance(elements[i].Position, position);
-            if (dist < bestDist && elements[i].Player == 0)
+            var dist = Vector3.Distance(Positions[i], pos);
+            if (dist < bestDist)
             {
                 bestDist = dist;
-                bestIndex = i;
+                bestPos = i;
             }
         }
 
-        if (bestIndex != -1 && Vector3.Distance(elements[bestIndex].Position, position) < 2.5f)
-        {
-            dropIndex = bestIndex;
-            return true;
-        }
-
-        dropIndex = -1;
-        return false;
+        return (Positions[bestPos], bestPos, bestDist);
     }
 }

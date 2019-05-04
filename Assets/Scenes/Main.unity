@@ -178,7 +178,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (1)
+      value: StoneBlack (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -252,7 +252,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (8)
+      value: StoneBlack (8)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -418,7 +418,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (1)
+      value: StoneWhite (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -586,6 +586,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09979f68fead2974ba735f77d31a901c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Stones:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
 --- !u!1001 &463988004
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -596,7 +646,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (4)
+      value: StoneWhite (4)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -670,7 +720,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (8)
+      value: StoneWhite (8)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -726,6 +776,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217621136038601765, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7051707414497541718, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -1952,11 +2007,6 @@ PrefabInstance:
       propertyPath: bakeValues.Array.data[0].data.Array.data[87].y
       value: 0.4472136
       objectReference: {fileID: 0}
-    - target: {fileID: 2217621136038601765, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aedbe589cbeb8e341a25a6e3049b6ac9, type: 3}
 --- !u!1 &573994194
@@ -1999,7 +2049,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (6)
+      value: StoneBlack (6)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -2073,7 +2123,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (7)
+      value: StoneBlack (7)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -2238,7 +2288,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (2)
+      value: StoneWhite (2)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -2456,7 +2506,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (5)
+      value: StoneWhite (5)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -2560,7 +2610,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (2)
+      value: StoneBlack (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -2664,7 +2714,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (6)
+      value: StoneWhite (6)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -2738,7 +2788,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (4)
+      value: StoneBlack (4)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -2812,7 +2862,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (7)
+      value: StoneWhite (7)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -2886,7 +2936,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (3)
+      value: StoneBlack (3)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -2960,7 +3010,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (0)
+      value: StoneWhite (0)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -3017,18 +3067,62 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7051707414497541718, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
-        type: 3}
-      propertyPath: outlineWidth
-      value: 2.06
-      objectReference: {fileID: 0}
     - target: {fileID: 2217621136038601765, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7051707414497541718, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
+        type: 3}
+      propertyPath: outlineWidth
+      value: 2.06
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aedbe589cbeb8e341a25a6e3049b6ac9, type: 3}
+--- !u!1 &1846231481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1846231483}
+  - component: {fileID: 1846231482}
+  m_Layer: 0
+  m_Name: AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1846231482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846231481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0fe2aaf1616f1a469f79cc77c80050e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: 2
+--- !u!4 &1846231483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846231481}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 19.526457, y: 1.0643859, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 26
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1846651179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3039,7 +3133,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (0)
+      value: StoneBlack (0)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
@@ -3113,7 +3207,7 @@ PrefabInstance:
     - target: {fileID: 8698356653494442895, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
       propertyPath: m_Name
-      value: PieceWhite (3)
+      value: StoneWhite (3)
       objectReference: {fileID: 0}
     - target: {fileID: 7507382259818139917, guid: aedbe589cbeb8e341a25a6e3049b6ac9,
         type: 3}
@@ -3187,7 +3281,7 @@ PrefabInstance:
     - target: {fileID: 5029685548720192682, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
       propertyPath: m_Name
-      value: PieceBlack (5)
+      value: StoneBlack (5)
       objectReference: {fileID: 0}
     - target: {fileID: 6148637738634016296, guid: e944041f6ea07474ebc61a02935de2c3,
         type: 3}
