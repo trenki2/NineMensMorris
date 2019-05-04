@@ -2683,7 +2683,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1374562413}
-  - component: {fileID: 1374562412}
   - component: {fileID: 1374562414}
   m_Layer: 0
   m_Name: SetResolution
@@ -2692,18 +2691,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1374562412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1374562411}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1374562413
 Transform:
   m_ObjectHideFlags: 0

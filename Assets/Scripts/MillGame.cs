@@ -256,12 +256,12 @@ public class MillGame
             Player = OtherPlayer;
             State = lastState;
 
-            if (Board.Where(x => x == 1).Count() < 3)
+            if (AvailableStones[0] + Board.Where(x => x == 1).Count() < 3)
             {
                 State = MillState.GameOver;
                 Winner = 2;
             }
-            else if (Board.Where(x => x == 2).Count() < 3)
+            else if (AvailableStones[1] + Board.Where(x => x == 2).Count() < 3)
             {
                 State = MillState.GameOver;
                 Winner = 1;
