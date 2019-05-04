@@ -173,17 +173,18 @@ public class MillAI : MonoBehaviour
 
 public class AI
 {
+    private System.Random random = new System.Random();
+    private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+    private int timeLimit = 5000;
+
     public MillAction CalculateAction(MillGame game)
     {
-        Debug.Log("CalculateAction start");
-
         var key = new object();
-        var random = new System.Random();
         var children = game.Children.OrderBy(x => random.Next()).ToArray();
         var bestResult = float.NegativeInfinity;
         var bestAction = children[0].LastAction;
 
-        Debug.Log(children.Length);
+        stopwatch.Start();
 
         Parallel.For(0, children.Length, (i) =>
         {
@@ -198,8 +199,6 @@ public class AI
             }
         });
 
-        Debug.Log($"CalculateAction done. ({bestAction.Pos0};{bestAction.Pos1})");
-
         return bestAction;
     }
 
@@ -207,13 +206,13 @@ public class AI
     {
         var otherPlayer = maximizingPlayer == 1 ? 2 : 1;
 
-        if (depth == 0 || node.IsGameOver)
+        if (depth == 0 || node.IsGameOver || stopwatch.ElapsedMilliseconds >= timeLimit)
             return node.CalculateRating(maximizingPlayer);
 
         if (node.Player == maximizingPlayer)
         {
             var value = float.NegativeInfinity;
-            foreach (var child in node.Children)
+            foreach (var child in node.Children.OrderBy(x => RandomInt()))
             {
                 value = Math.Max(value, AlphaBeta(child, depth - 1, alpha, beta, otherPlayer));
                 alpha = Math.Max(alpha, value);
@@ -225,7 +224,7 @@ public class AI
         else
         {
             var value = float.PositiveInfinity;
-            foreach (var child in node.Children)
+            foreach (var child in node.Children.OrderBy(x => RandomInt()))
             {
                 value = Math.Min(value, AlphaBeta(child, depth - 1, alpha, beta, maximizingPlayer));
                 beta = Math.Min(beta, value);
@@ -233,6 +232,14 @@ public class AI
                     break;
             }
             return value;
+        }
+    }
+
+    private int RandomInt()
+    {
+        lock(random)
+        {
+            return random.Next();
         }
     }
 }
