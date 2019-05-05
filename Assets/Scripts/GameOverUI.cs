@@ -19,7 +19,7 @@ public class GameOverUI : MonoBehaviour
         if (game.IsGameOver)
         {
             canvasGameobject.SetActive(true);
-            winLooseText.text = game.Winner == 1 ? "You WIN!" : "You LOOSE!";
+            winLooseText.text = game.Winner == 1 ? "You WON!" : "You LOST!";
         }
     }
 
