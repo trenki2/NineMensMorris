@@ -98,7 +98,7 @@ public class MillGame
         adjacent[23].Add(15);
     }
 
-    public IEnumerable<MillGame> Children
+    public IEnumerable<MillAction> PossibleActions
     {
         get
         {
@@ -108,11 +108,7 @@ public class MillGame
                     for (int i = 0; i < 24; i++)
                     {
                         if (Board[i] == 0)
-                        {
-                            var newNode = Clone();
-                            newNode.Execute(new MillAction(i));
-                            yield return newNode;
-                        }
+                            yield return new MillAction(i);
                     }
                     break;
 
@@ -128,11 +124,7 @@ public class MillGame
                                 for (int j = 0; j < 24; j++)
                                 {
                                     if (Board[j] == 0)
-                                    {
-                                        var newNode = Clone();
-                                        newNode.Execute(new MillAction(i, j));
-                                        yield return newNode;
-                                    }
+                                        yield return new MillAction(i, j);
                                 }
                             }
                             else
@@ -140,11 +132,7 @@ public class MillGame
                                 foreach (var j in adjacent[i])
                                 {
                                     if (Board[j] == 0)
-                                    {
-                                        var newNode = Clone();
-                                        newNode.Execute(new MillAction(i, j));
-                                        yield return newNode;
-                                    }
+                                        yield return new MillAction(i, j);
                                 }
                             }
                         }
@@ -155,13 +143,22 @@ public class MillGame
                     for (int i = 0; i < 24; i++)
                     {
                         if (Board[i] == OtherPlayer && !CheckForMill(i))
-                        {
-                            var newNode = Clone();
-                            newNode.Execute(new MillAction(i));
-                            yield return newNode;
-                        }
+                            yield return new MillAction(i);
                     }
                     break;
+            }
+        }
+    }
+
+    public IEnumerable<MillGame> Children
+    {
+        get
+        {
+            foreach (var action in PossibleActions)
+            {
+                var newGame = Clone();
+                newGame.Execute(action);
+                yield return newGame;
             }
         }
     }
@@ -267,8 +264,7 @@ public class MillGame
             }
         }
 
-        // No Move possible?
-        if (Children.Count() == 0)
+        if (PossibleActions.Count() == 0)
         {
             State = MillState.GameOver;
             Winner = OtherPlayer;
@@ -295,7 +291,10 @@ public class MillGame
         var scores = new int[2];
 
         for (int i = 0; i < 2; i++)
+        {
             scores[i] += AvailableStones[i] + Board.Where(x => x == i + 1).Count();
+            scores[i] += IsGameOver && Winner == player ? 100 : 0;
+        }
 
         return player == 2 ? scores[1] - scores[0] : scores[0] - scores[1];
     }

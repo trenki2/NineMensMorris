@@ -79,7 +79,7 @@ public class QualityAdaptation : MonoBehaviour
 
             if (Debug.isDebugBuild)
             {
-                Debug.Log("Current Average Framerate is: " + currentAverageFps);
+                //Debug.Log("Current Average Framerate is: " + currentAverageFps);
             }
 
             // Decrease level if framerate too low
@@ -124,7 +124,7 @@ public class QualityAdaptation : MonoBehaviour
                 lastMovementWasDown = false;
                 if (Debug.isDebugBuild)
                 {
-                    Debug.Log("Increasing Quality Level, now " + QualitySettings.names[QualitySettings.GetQualityLevel()]);
+                    //Debug.Log("Increasing Quality Level, now " + QualitySettings.names[QualitySettings.GetQualityLevel()]);
                 }
             }
             else
@@ -138,7 +138,7 @@ public class QualityAdaptation : MonoBehaviour
             {
                 if (Debug.isDebugBuild)
                 {
-                    Debug.Log("Framerate is stable now, removing automatic adaptation.");
+                    //Debug.Log("Framerate is stable now, removing automatic adaptation.");
                 }
                 Destroy(this);
             }

@@ -32,10 +32,7 @@ public class Stone : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!acceptInput)
-            return;
-
-        if (game.Player != 1)
+        if (!acceptInput || game.Player != 1 || game.IsGameOver)
             return;
 
         if (game.State == MillState.TakingStones && player == 2)
