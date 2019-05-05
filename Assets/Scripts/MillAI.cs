@@ -47,7 +47,7 @@ public class MillAI
                 value = Math.Max(value, AlphaBeta(child, depth - 1, alpha, beta, maximizingPlayer));
                 alpha = Math.Max(alpha, value);
                 if (alpha >= beta)
-                    break;
+                   break;
             }
             return value;
         }

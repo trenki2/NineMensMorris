@@ -298,15 +298,4 @@ public class MillGame
 
         return player == 2 ? scores[1] - scores[0] : scores[0] - scores[1];
     }
-
-    public int CountMills(int player)
-    {
-        var count = 0;
-        foreach (var m in mills)
-        {
-            if (Board[m.Item1] == player && Board[m.Item2] == player && Board[m.Item3] == player)
-                count++;
-        }
-        return count;
-    }
 }
