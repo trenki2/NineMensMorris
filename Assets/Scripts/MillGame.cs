@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 [Serializable]
 public enum MillState
@@ -66,18 +65,18 @@ public class MillGame
             adjacent[i] = new List<int>();
 
         for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 3; j++)
-        {
-            int index = i + j * 8 + 1;
-            if (index >= (j + 1) * 8)
-                index -= 8;
-            adjacent[i + j * 8].Add(index);
+            for (int j = 0; j < 3; j++)
+            {
+                int index = i + j * 8 + 1;
+                if (index >= (j + 1) * 8)
+                    index -= 8;
+                adjacent[i + j * 8].Add(index);
 
-            index = i + j * 8 - 1;
-            if (index < j * 8)
-                index += 8;
-            adjacent[i + j * 8].Add(index);
-        }
+                index = i + j * 8 - 1;
+                if (index < j * 8)
+                    index += 8;
+                adjacent[i + j * 8].Add(index);
+            }
 
         adjacent[1].Add(9);
         adjacent[3].Add(11);
@@ -266,6 +265,13 @@ public class MillGame
                 State = MillState.GameOver;
                 Winner = 1;
             }
+        }
+
+        // No Move possible?
+        if (Children.Count() == 0)
+        {
+            State = MillState.GameOver;
+            Winner = OtherPlayer;
         }
     }
 
