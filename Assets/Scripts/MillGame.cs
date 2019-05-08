@@ -293,7 +293,7 @@ public class MillGame
         for (int i = 0; i < 2; i++)
         {
             scores[i] += AvailableStones[i] + Board.Where(x => x == i + 1).Count();
-            scores[i] += IsGameOver && Winner == player ? 100 : 0;
+            scores[i] += IsGameOver && Winner == i + 1 ? 100 : 0;
         }
 
         return player == 2 ? scores[1] - scores[0] : scores[0] - scores[1];
