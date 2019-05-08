@@ -264,7 +264,7 @@ public class MillGame
             }
         }
 
-        if (PossibleActions.Count() == 0)
+        if (State != MillState.TakingStones && PossibleActions.Count() == 0)
         {
             State = MillState.GameOver;
             Winner = OtherPlayer;
