@@ -35,8 +35,8 @@ namespace Tests
             //Assert.IsFalse(action.IsMoveAction);
             //Assert.AreEqual(12, action.Pos0);
         }
-        [Test]
 
+        [Test]
         public void TestMillGameSimple2()
         {
             var game = new MillGame();
@@ -53,6 +53,28 @@ namespace Tests
 
             Assert.IsFalse(action.IsMoveAction);
             Assert.AreEqual(6, action.Pos0);
+        }
+
+        [Test]
+        public void TestMillGameSimple3()
+        {
+            var game = new MillGame();
+            game.Board[2] = 2;
+            game.Board[3] = 1;
+            game.Board[4] = 2;
+            game.Board[9] = 2;
+            game.Board[20] = 1;
+            game.Board[21] = 1;
+            game.AvailableStones[0] = 0;
+            game.AvailableStones[1] = 0;
+            game.State = MillState.MovingStones;
+            game.Player = 2;
+
+            var ai = new MillAI();
+            var action = ai.CalculateAction(game);
+
+            Assert.IsTrue(action.IsMoveAction);
+            Assert.AreEqual(22, action.Pos1);
         }
     }
 }

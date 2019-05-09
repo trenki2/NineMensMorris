@@ -18,18 +18,21 @@ public class MillAI
 
         stopwatch.Start();
 
-        Parallel.For(0, children.Length, (i) =>
+        for (int lookAhead = 2; lookAhead <= 4; lookAhead++)
         {
-            var result = AlphaBeta(children[i], 4, float.NegativeInfinity, float.PositiveInfinity, game.Player);
-            lock (locker)
+            Parallel.For(0, children.Length, (i) =>
             {
-                if (result > bestResult)
+                var result = AlphaBeta(children[i], lookAhead, float.NegativeInfinity, float.PositiveInfinity, game.Player);
+                lock (locker)
                 {
-                    bestResult = result;
-                    bestAction = children[i].LastAction;
+                    if (result > bestResult && stopwatch.ElapsedMilliseconds < timeLimit)
+                    {
+                        bestResult = result;
+                        bestAction = children[i].LastAction;
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return bestAction;
     }
