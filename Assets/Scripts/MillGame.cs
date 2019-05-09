@@ -264,10 +264,18 @@ public class MillGame
             }
         }
 
-        if (State != MillState.TakingStones && PossibleActions.Count() == 0)
+        if (PossibleActions.Count() == 0)
         {
-            State = MillState.GameOver;
-            Winner = OtherPlayer;
+            if (State == MillState.TakingStones)
+            {
+                State = lastState;
+                Player = OtherPlayer;
+            }
+            else
+            {
+                State = MillState.GameOver;
+                Winner = OtherPlayer;
+            }
         }
     }
 
