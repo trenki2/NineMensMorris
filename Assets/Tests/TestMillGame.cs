@@ -8,7 +8,7 @@ namespace Tests
         [Test]
         public void TestMillGameSimple1()
         {
-            var game = new Game();
+            var game = new MillGame();
             game.Board[3] = 2;
             game.Board[4] = 1;
             game.Board[5] = 1;
@@ -39,7 +39,7 @@ namespace Tests
         [Test]
         public void TestMillGameSimple2()
         {
-            var game = new Game();
+            var game = new MillGame();
             game.Board[4] = 1;
             game.Board[5] = 1;
             game.Board[3] = 2;
@@ -58,7 +58,7 @@ namespace Tests
         [Test]
         public void TestMillGameSimple3()
         {
-            var game = new Game();
+            var game = new MillGame();
             game.Board[2] = 2;
             game.Board[3] = 1;
             game.Board[4] = 2;

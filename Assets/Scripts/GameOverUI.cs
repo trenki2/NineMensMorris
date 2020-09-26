@@ -6,7 +6,7 @@ public class GameOverUI : MonoBehaviour
 {
     public GameObject canvasGameobject;
     public TextMeshProUGUI winLooseText;
-    private Game game;
+    private MillGame game;
 
     private void Start()
     {

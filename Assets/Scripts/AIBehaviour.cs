@@ -19,7 +19,7 @@ public class AIBehaviour : MonoBehaviour
     private object locker = new object();
     private State state = State.Begin;
     private Board board;
-    private Game game;
+    private MillGame game;
     private MillAction action;
     private Queue<GameObject> stones = new Queue<GameObject>();
 

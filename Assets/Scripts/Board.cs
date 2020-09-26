@@ -2,7 +2,7 @@
 
 public class Board : MonoBehaviour
 {
-    public Game Game { get; private set; } = new Game();
+    public MillGame Game { get; private set; } = new MillGame();
 
     public GameObject[] Stones = new GameObject[24];
     public Vector3[] Positions = new Vector3[24];

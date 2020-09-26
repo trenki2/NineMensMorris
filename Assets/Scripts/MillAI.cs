@@ -9,7 +9,7 @@ public class MillAI
     private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
     private int timeLimit = 5000;
 
-    public MillAction CalculateAction(Game game)
+    public MillAction CalculateAction(MillGame game)
     {
         var locker = new object();
         var children = game.Children.OrderBy(x => random.Next()).ToArray();
@@ -37,7 +37,7 @@ public class MillAI
         return bestAction;
     }
 
-    private float AlphaBeta(Game node, int depth, float alpha, float beta, int maximizingPlayer)
+    private float AlphaBeta(MillGame node, int depth, float alpha, float beta, int maximizingPlayer)
     {
         if (depth == 0 || node.IsGameOver || stopwatch.ElapsedMilliseconds >= timeLimit)
             return node.CalculateRating(maximizingPlayer);
