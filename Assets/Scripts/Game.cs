@@ -27,7 +27,7 @@ public class MillAction
 }
 
 [Serializable]
-public class MillGame
+public class Game
 {
     public bool IsGameOver => State == MillState.GameOver;
     public int Winner { get; private set; }
@@ -45,7 +45,7 @@ public class MillGame
     private static List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>();
     private static List<int>[] adjacent = new List<int>[24];
 
-    static MillGame()
+    static Game()
     {
         for (int i = 0; i < 3; i++)
         {
@@ -150,7 +150,7 @@ public class MillGame
         }
     }
 
-    public IEnumerable<MillGame> Children
+    public IEnumerable<Game> Children
     {
         get
         {
@@ -279,9 +279,9 @@ public class MillGame
         }
     }
 
-    public MillGame Clone()
+    public Game Clone()
     {
-        var newNode = new MillGame();
+        var newNode = new Game();
 
         Array.Copy(Board, newNode.Board, Board.Length);
         Array.Copy(AvailableStones, newNode.AvailableStones, AvailableStones.Length);

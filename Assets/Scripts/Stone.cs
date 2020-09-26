@@ -9,7 +9,7 @@ public class Stone : MonoBehaviour
     private Vector3 originalPosition;
     private bool acceptInput = true;
     private Board board;
-    private MillGame game;
+    private Game game;
     private int boardPos = -1;
 
     private void Start()
