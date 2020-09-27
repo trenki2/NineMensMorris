@@ -24,7 +24,7 @@ namespace NineMensMorris
 
             stopwatch.Start();
 
-            for (int lookAhead = 2; lookAhead <= 6; lookAhead++)
+            for (int lookAhead = 3; lookAhead <= 6; lookAhead++)
             {
                 Parallel.For(0, nextStates.Length, (i) =>
                 {
@@ -77,15 +77,10 @@ namespace NineMensMorris
 
         private float CalculateRating(Game game, int player)
         {
-            var scores = new int[2];
-
-            for (int i = 0; i < 2; i++)
-            {
-                scores[i] += game.AvailableStones[i] + game.StonesOnBoard[i];
-                scores[i] += game.Winner == i + 1 ? 100 : 0;
-            }
-
-            return scores[1] - scores[0] * (player == 2 ? 1 : -1);
+            var otherPlayer = player == 2 ? 1 : 2;
+            var playerStones = game.AvailableStones[player - 1] + game.StonesOnBoard[player - 1];
+            var otherPlayerStones = game.AvailableStones[otherPlayer - 1] + game.StonesOnBoard[otherPlayer - 1];
+            return playerStones + 9 - otherPlayerStones;
         }
 
         private int RandomInt()
