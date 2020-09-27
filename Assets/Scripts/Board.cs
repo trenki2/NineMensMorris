@@ -2,8 +2,6 @@
 
 public class Board : MonoBehaviour
 {
-    public MillGame Game { get; private set; } = new MillGame();
-
     public GameObject[] Stones = new GameObject[24];
     public Vector3[] Positions = new Vector3[24];
 
@@ -41,7 +39,7 @@ public class Board : MonoBehaviour
         Positions[23] = new Vector3(pos2.x, 0, 0);
     }
 
-    public (Vector3 pos, int boardPos, float dist) GetNearestPosition(Vector3 pos)
+    public (Vector3 location, int boardPos, float dist) GetNearestPosition(Vector3 pos)
     {
         float bestDist = float.MaxValue;
         int bestPos = 0;
@@ -57,5 +55,19 @@ public class Board : MonoBehaviour
         }
 
         return (Positions[bestPos], bestPos, bestDist);
+    }
+
+    public void MoveStone(int from, int to, GameObject stone)
+    {
+        if (from != -1)
+            Stones[from] = null;
+        Stones[to] = stone;
+    }
+
+    public void RemoveStone(int boardPos)
+    {
+        var stone = Stones[boardPos];
+        Stones[boardPos] = null;
+        Destroy(stone);
     }
 }

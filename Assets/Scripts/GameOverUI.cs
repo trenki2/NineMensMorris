@@ -1,17 +1,17 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NineMensMorris;
 
 public class GameOverUI : MonoBehaviour
 {
     public GameObject canvasGameobject;
     public TextMeshProUGUI winLooseText;
-    private MillGame game;
+    private Game game;
 
     private void Start()
     {
-        var board = GameObject.Find("Board").GetComponent<Board>();
-        game = board.Game;
+        game = GameObject.Find("GameManager").GetComponent<GameManager>().Game;
     }
 
     private void Update()

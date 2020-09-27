@@ -1,21 +1,27 @@
 ﻿using System.Collections;
 using UnityEngine;
+using NineMensMorris;
 
 public class Stone : MonoBehaviour
 {
-    public int player;
+    public int owner;
+
+    private Board board;
+    private Game game;
+    private GameManager gameManager;
 
     private bool dragging;
-    private Vector3 originalPosition;
     private bool acceptInput = true;
-    private Board board;
-    private MillGame game;
+    
     private int boardPos = -1;
+    
+    private Vector3 originalPosition;
 
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         board = GameObject.Find("Board").GetComponent<Board>();
-        game = board.Game;
+        game = gameManager.Game;
     }
 
     private void Update()
@@ -32,27 +38,17 @@ public class Stone : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!acceptInput || game.Player != 1 || game.IsGameOver)
+        if (!acceptInput || game.CurrentPlayer != 1 || game.IsGameOver)
             return;
 
-        if (game.State == MillState.TakingStones && player == 2)
+        if (owner == 2 && gameManager.MoveState == MoveState.RemoveStone)
         {
-            var result = board.GetNearestPosition(transform.position);
-            var action = new MillAction(result.boardPos);
-
-            if (game.CanExecute(action))
-            {
-                var stone = board.Stones[result.boardPos];
-                board.Stones[result.boardPos] = null;
-                Destroy(stone);
-                game.Execute(action);
-            }
+            var pos = board.GetNearestPosition(transform.position);
+            board.RemoveStone(pos.boardPos);
+            gameManager.RemoveStone(pos.boardPos);
         }
-        else if (player == 1 && game.State != MillState.TakingStones)
+        else if (owner == 1 && gameManager.MoveState == MoveState.MoveStone)
         {
-            if (game.State == MillState.PlacingStones && boardPos != -1)
-                return;
-
             dragging = true;
             originalPosition = transform.position;
         }
@@ -60,37 +56,25 @@ public class Stone : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (dragging)
+        if (dragging) 
         {
             dragging = false;
 
-            var result = board.GetNearestPosition(transform.position);
-            var action = game.State != MillState.MovingStones ? new MillAction(result.boardPos) : new MillAction(this.boardPos, result.boardPos);
-            var canDrop = result.dist < 3.0f && game.CanExecute(action);
+            var pos = board.GetNearestPosition(transform.position);
+            var canDrop = pos.dist < 3.0f && game.Board[pos.boardPos] == 0;
 
             if (canDrop)
-                DropStone(result.pos, action);
+            {
+                board.MoveStone(from: boardPos, to: pos.boardPos, gameObject);
+                gameManager.MoveStone(from: boardPos, to: pos.boardPos);
+                boardPos = pos.boardPos;
+                transform.position = pos.location;
+            }
             else
+            {
                 StartCoroutine(MoveToOriginalPosition());
+            }
         }
-    }
-
-    private void DropStone(Vector3 pos, MillAction action)
-    {
-        if (action.IsMoveAction)
-        {
-            board.Stones[action.Pos0] = null;
-            board.Stones[action.Pos1] = gameObject;
-            this.boardPos = action.Pos1;
-        }
-        else
-        {
-            board.Stones[action.Pos0] = gameObject;
-            this.boardPos = action.Pos0;
-        }
-
-        transform.position = pos;
-        game.Execute(action);
     }
 
     private IEnumerator MoveToOriginalPosition()
@@ -105,7 +89,7 @@ public class Stone : MonoBehaviour
         {
             var t = (Time.time - startTime) / duration;
             transform.position = Vector3.Lerp(startPos, originalPosition, t);
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
         transform.position = originalPosition;

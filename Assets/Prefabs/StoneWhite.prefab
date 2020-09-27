@@ -7,30 +7,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1486611874220786429, guid: bf63dc59f36980148b615e1aabd96c0f,
-        type: 3}
-      propertyPath: m_Name
-      value: PieceWhite Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 4905723273704911390, guid: bf63dc59f36980148b615e1aabd96c0f,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 799d11e01f1c3ad4aa8ee9cccf27b284, type: 2}
     - target: {fileID: 304222456585406591, guid: bf63dc59f36980148b615e1aabd96c0f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 19.199451
       objectReference: {fileID: 0}
     - target: {fileID: 304222456585406591, guid: bf63dc59f36980148b615e1aabd96c0f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 304222456585406591, guid: bf63dc59f36980148b615e1aabd96c0f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -5.701377
       objectReference: {fileID: 0}
     - target: {fileID: 304222456585406591, guid: bf63dc59f36980148b615e1aabd96c0f,
         type: 3}
@@ -72,10 +62,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1486611874220786429, guid: bf63dc59f36980148b615e1aabd96c0f,
+        type: 3}
+      propertyPath: m_Name
+      value: StoneWhite (0)
+      objectReference: {fileID: 0}
     - target: {fileID: 2930557234809529177, guid: bf63dc59f36980148b615e1aabd96c0f,
         type: 3}
       propertyPath: player
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2930557234809529177, guid: bf63dc59f36980148b615e1aabd96c0f,
+        type: 3}
+      propertyPath: owner
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905723273704911390, guid: bf63dc59f36980148b615e1aabd96c0f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 799d11e01f1c3ad4aa8ee9cccf27b284, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf63dc59f36980148b615e1aabd96c0f, type: 3}

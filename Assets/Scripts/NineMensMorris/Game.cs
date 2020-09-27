@@ -10,14 +10,31 @@ namespace NineMensMorris
         public int[] Board { get; } = new int[24];
         public int[] StonesOnBoard { get; } = new int[2] { 0, 0 };
         public int[] AvailableStones { get; } = new int[2] { 9, 9 };
-
+        
         public Move LastMove { get; private set; }
+        public Move[] AvailableMoves { get; private set; }
 
         public int CurrentPlayer { get; private set; } = 1;
         public int OtherPlayer => CurrentPlayer == 1 ? 2 : 1;
 
-        public bool IsGameOver => AvailableStones.Max() == 0 && StonesOnBoard.Min() < 3;
-        public int Winner => IsGameOver ? (StonesOnBoard[0] > StonesOnBoard[1] ? 1 : 2) : 0;
+        public bool IsGameOver => AvailableMoves.Length == 0 || (AvailableStones.Max() == 0 && StonesOnBoard.Min() < 3);
+
+        public int Winner
+        {
+            get
+            {
+                if (!IsGameOver)
+                    return 0;
+
+                if (AvailableMoves.Length == 0)
+                    return OtherPlayer;
+
+                if (AvailableStones[0] + StonesOnBoard[0] > AvailableStones[1] + StonesOnBoard[1])
+                    return 1;
+                else
+                    return 2;
+            }
+        }
 
         private static List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>();
         private static List<int>[] adjacent = new List<int>[24];
@@ -42,18 +59,18 @@ namespace NineMensMorris
                 adjacent[i] = new List<int>();
 
             for (int i = 0; i < 8; i++)
-                for (int j = 0; j < 3; j++)
-                {
-                    int index = i + j * 8 + 1;
-                    if (index >= (j + 1) * 8)
-                        index -= 8;
-                    adjacent[i + j * 8].Add(index);
+            for (int j = 0; j < 3; j++)
+            {
+                int index = i + j * 8 + 1;
+                if (index >= (j + 1) * 8)
+                    index -= 8;
+                adjacent[i + j * 8].Add(index);
 
-                    index = i + j * 8 - 1;
-                    if (index < j * 8)
-                        index += 8;
-                    adjacent[i + j * 8].Add(index);
-                }
+                index = i + j * 8 - 1;
+                if (index < j * 8)
+                    index += 8;
+                adjacent[i + j * 8].Add(index);
+            }
 
             adjacent[1].Add(9);
             adjacent[3].Add(11);
@@ -75,49 +92,61 @@ namespace NineMensMorris
             adjacent[23].Add(15);
         }
 
-        public IEnumerable<Move> AvailableMoves
+        public Game()
         {
-            get
+            AvailableMoves = CalculateAvailableMoves().ToArray();
+        }
+
+        private IEnumerable<Move> CalculateAvailableMoves()
+        {
+            for (int to = 0; to < Board.Length; to++)
             {
-                for (int to = 0; to < Board.Length; to++)
+                if (Board[to] != 0)
+                    continue;
+
+                for (int from = -1; from < Board.Length; from++)
                 {
-                    if (Board[to] != 0)
-                        continue;
-
-                    for (int from = -1; from < Board.Length; from++)
+                    if (from == -1)
                     {
-                        if (AvailableStones[CurrentPlayer] >= 0 && from != -1)
-                            break;
-
-                        if (from >= 0 && Board[from] != CurrentPlayer)
+                        if (AvailableStones[CurrentPlayer - 1] == 0)
+                            continue;
+                    }
+                    else
+                    {
+                        if (AvailableStones[CurrentPlayer - 1] != 0)
                             continue;
 
-                        if (StonesOnBoard[CurrentPlayer] > 3 && !adjacent[from].Contains(to))
+                        if (Board[from] != CurrentPlayer)
                             continue;
 
-                        if (WillHaveMill(to))
+                        if ((StonesOnBoard[CurrentPlayer - 1] + AvailableStones[CurrentPlayer - 1]) > 3 && !adjacent[from].Contains(to))
+                            continue;
+                    }
+
+                    if (WillHaveMill(from, to))
+                    {
+                        bool canRemoveStone = false;
+
+                        for (int remove = 0; remove < Board.Length; remove++)
                         {
-                            bool canRemoveStone = false;
+                            if (Board[remove] != OtherPlayer)
+                                continue;
 
-                            for (int remove = 0; remove < Board.Length; remove++)
-                            {
-                                if (Board[remove] != OtherPlayer)
-                                    continue;
+                            if (HasMill(remove))
+                                continue;
 
-                                if (HasMill(remove))
-                                    continue;
-
-                                canRemoveStone = true;
-                                yield return new Move { To = to, From = from, Remove = remove };
-                            }
-
-                            if (!canRemoveStone)
-                                yield return new Move { To = to, From = from, Remove = -1 };
+                            canRemoveStone = true;
+                            yield return new Move { To = to, From = from, Remove = remove };
                         }
-                        else
+
+                        if (!canRemoveStone)
                         {
                             yield return new Move { To = to, From = from, Remove = -1 };
                         }
+                    }
+                    else
+                    {
+                        yield return new Move { To = to, From = from, Remove = -1 };
                     }
                 }
             }
@@ -127,7 +156,7 @@ namespace NineMensMorris
         {
             get
             {
-                foreach (var move in AvailableMoves)
+                foreach (var move in AvailableMoves.ToList())
                 {
                     var newGame = Clone();
                     newGame.Move(move);
@@ -136,12 +165,21 @@ namespace NineMensMorris
             }
         }
 
-        public bool WillHaveMill(int pos)
+        public bool WillHaveMill(int from, int to)
         {
-            Debug.Assert(Board[pos] == 0);
-            Board[pos] = CurrentPlayer;
-            var result = HasMill(pos);
-            Board[pos] = 0;
+            System.Diagnostics.Debug.Assert(from == -1 || Board[from] == CurrentPlayer);
+            System.Diagnostics.Debug.Assert(Board[to] == 0);
+
+            if (from != -1)
+                Board[from] = 0;
+            Board[to] = CurrentPlayer;
+
+            var result = HasMill(to);
+
+            if (from != -1)
+                Board[from] = CurrentPlayer;
+            Board[to] = 0;
+
             return result;
         }
 
@@ -156,11 +194,11 @@ namespace NineMensMorris
 
             if (Board[move.To] != 0)
                 return false;
-            if (move.From == -1 && AvailableStones[CurrentPlayer] <= 0)
+            if (move.From == -1 && AvailableStones[CurrentPlayer - 1] <= 0)
                 return false;
             if (move.From != -1 && Board[move.From] != CurrentPlayer)
                 return false;
-            if (move.Remove != -1 && (Board[move.Remove] != OtherPlayer || !HasMill(move.To)))
+            if (move.Remove != -1 && (Board[move.Remove] != OtherPlayer || !WillHaveMill(move.From, move.To)))
                 return false;
 
             return true;
@@ -179,18 +217,19 @@ namespace NineMensMorris
             }
             else
             {
-                AvailableStones[CurrentPlayer]--;
-                StonesOnBoard[CurrentPlayer]++;
+                AvailableStones[CurrentPlayer - 1]--;
+                StonesOnBoard[CurrentPlayer - 1]++;
             }
 
             if (move.Remove != -1)
             {
-                StonesOnBoard[Board[move.Remove]]--;
+                StonesOnBoard[Board[move.Remove] - 1]--;
                 Board[move.Remove] = 0;
             }
 
             LastMove = move;
             CurrentPlayer = OtherPlayer;
+            AvailableMoves = CalculateAvailableMoves().ToArray();
         }
 
         private bool HasMill(int pos)
@@ -218,6 +257,9 @@ namespace NineMensMorris
             Array.Copy(Board, clone.Board, Board.Length);
             Array.Copy(AvailableStones, clone.AvailableStones, AvailableStones.Length);
             Array.Copy(StonesOnBoard, clone.StonesOnBoard, StonesOnBoard.Length);
+
+            clone.AvailableMoves = new Move[AvailableMoves.Length];
+            Array.Copy(AvailableMoves, clone.AvailableMoves, AvailableMoves.Length);
 
             return clone;
         }

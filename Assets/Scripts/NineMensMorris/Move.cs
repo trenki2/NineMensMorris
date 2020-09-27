@@ -1,6 +1,6 @@
 ﻿namespace NineMensMorris
 {
-    public struct Move
+    public class Move
     {
         public int To { get; set; }
         public int From { get; set; }

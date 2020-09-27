@@ -1,32 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
+using NineMensMorris;
+using System.IO;
+using System;
+using System.Threading.Tasks;
 
 public class AIBehaviour : MonoBehaviour
 {
-    public int player = 2;
+    public int player;
 
     private enum State
     {
-        Begin,
+        WaitForTurn,
         WaitForResult,
-        PlacingStone,
-        TakingStone,
-        MovingStone
+        ApplyMove
     }
 
     private object locker = new object();
-    private State state = State.Begin;
+    private State state;
     private Board board;
-    private MillGame game;
-    private MillAction action;
+    private Game game;
+    private Move move;
     private Queue<GameObject> stones = new Queue<GameObject>();
+
+    public bool ResultAvailable { get { lock (locker) { return move != null; } } }
 
     private void Start()
     {
         board = GameObject.Find("Board").GetComponent<Board>();
-        game = board.Game;
+        game = GameObject.Find("GameManager").GetComponent<GameManager>().Game;
 
         foreach (var obj in FindObjectsOfType<GameObject>())
         {
@@ -39,10 +42,10 @@ public class AIBehaviour : MonoBehaviour
     {
         switch (state)
         {
-            case State.Begin:
-                if (!game.IsGameOver && game.Player == player)
+            case State.WaitForTurn:
+                if (game.CurrentPlayer == player && !game.IsGameOver)
                 {
-                    CalculateAction();
+                    CalculateMove();
                     state = State.WaitForResult;
                 }
                 break;
@@ -50,59 +53,23 @@ public class AIBehaviour : MonoBehaviour
             case State.WaitForResult:
                 if (ResultAvailable)
                 {
-                    switch (game.State)
-                    {
-                        case MillState.PlacingStones:
-                            StartCoroutine(PlaceStone());
-                            break;
-
-                        case MillState.MovingStones:
-                            StartCoroutine(MoveStone());
-                            break;
-
-                        case MillState.TakingStones:
-                            StartCoroutine(TakeStone());
-                            break;
-                    }
+                    state = State.ApplyMove;
+                    StartCoroutine(ApplyMove());
                 }
+                break;
+
+            case State.ApplyMove:
                 break;
         }
     }
 
-    private bool ResultAvailable
+    private IEnumerator ApplyMove()
     {
-        get
-        {
-            lock (locker)
-            {
-                return action != null;
-            }
-        }
-    }
-
-    private IEnumerator TakeStone()
-    {
-        state = State.TakingStone;
-
-        var stone = board.Stones[action.Pos0];
-        board.Stones[action.Pos0] = null;
-        Destroy(stone);
-        game.Execute(action);
-        Debug.Assert(game.Board[action.Pos0] == 0);
-
-        state = State.Begin;
-
-        yield return null;
-    }
-
-    private IEnumerator MoveStone()
-    {
-        state = State.MovingStone;
-
-        var stone = board.Stones[action.Pos0];
+        // 1. Move the stone
+        var stone = move.From == -1 ? stones.Dequeue() : board.Stones[move.From];
 
         var startPos = stone.transform.position;
-        var targetPos = board.Positions[action.Pos1];
+        var targetPos = board.Positions[move.To];
 
         var startTime = Time.time;
         var duration = 0.5f;
@@ -111,57 +78,36 @@ public class AIBehaviour : MonoBehaviour
         {
             var t = (Time.time - startTime) / duration;
             stone.transform.position = Vector3.Lerp(startPos, targetPos, t);
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
         stone.transform.position = targetPos;
-        board.Stones[action.Pos0] = null;
-        board.Stones[action.Pos1] = stone;
-        game.Execute(action);
-        Debug.Assert(game.Board[action.Pos1] == player);
+        board.MoveStone(move.From, move.To, stone);
 
-        state = State.Begin;
+        // 2. Remove other player stone
+        if (move.Remove != -1)
+            board.RemoveStone(move.Remove);
+
+        // 3. Update game state
+        game.Move(move);
+
+        // 4. Wait for next turn
+        move = null;
+        state = State.WaitForTurn;
     }
 
-    private IEnumerator PlaceStone()
+    private void CalculateMove()
     {
-        state = State.PlacingStone;
-
-        var stone = stones.Dequeue();
-
-        var startPos = stone.transform.position;
-        var targetPos = board.Positions[action.Pos0];
-
-        var startTime = Time.time;
-        var duration = 0.5f;
-
-        while (Time.time - startTime < duration)
-        {
-            var t = (Time.time - startTime) / duration;
-            stone.transform.position = Vector3.Lerp(startPos, targetPos, t);
-            yield return new WaitForEndOfFrame();
-        }
-
-        stone.transform.position = targetPos;
-        board.Stones[action.Pos0] = stone;
-        game.Execute(action);
-        Debug.Assert(game.Board[action.Pos0] == player);
-
-        state = State.Begin;
-    }
-
-    private void CalculateAction()
-    {
-        action = null;
+        move = null;
 
         Task.Run(() =>
         {
-            var ai = new MillAI();
-            var action = ai.CalculateAction(board.Game);
+            var ai = new AI();
+            var move = ai.CalculateMove(game);
 
             lock (locker)
             {
-                this.action = action;
+                this.move = move;
             }
         });
     }
