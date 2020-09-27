@@ -80,7 +80,7 @@ namespace NineMensMorris
             var otherPlayer = player == 2 ? 1 : 2;
             var playerStones = game.AvailableStones[player - 1] + game.StonesOnBoard[player - 1];
             var otherPlayerStones = game.AvailableStones[otherPlayer - 1] + game.StonesOnBoard[otherPlayer - 1];
-            return playerStones + 9 - otherPlayerStones;
+            return playerStones - otherPlayerStones;
         }
 
         private int RandomInt()
