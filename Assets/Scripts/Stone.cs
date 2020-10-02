@@ -44,8 +44,11 @@ public class Stone : MonoBehaviour
         if (owner == 2 && gameManager.MoveState == MoveState.RemoveStone)
         {
             var pos = board.GetNearestPosition(transform.position);
-            board.RemoveStone(pos.boardPos);
-            gameManager.RemoveStone(pos.boardPos);
+            if (!game.HasMill(pos.boardPos))
+            {
+                board.RemoveStone(pos.boardPos);
+                gameManager.RemoveStone(pos.boardPos);
+            }
         }
         else if (owner == 1 && gameManager.MoveState == MoveState.MoveStone)
         {

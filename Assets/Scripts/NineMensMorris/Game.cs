@@ -232,7 +232,7 @@ namespace NineMensMorris
             AvailableMoves = CalculateAvailableMoves().ToArray();
         }
 
-        private bool HasMill(int pos)
+        public bool HasMill(int pos)
         {
             var p = Board[pos];
 
