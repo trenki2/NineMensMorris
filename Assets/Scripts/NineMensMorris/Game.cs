@@ -92,6 +92,11 @@ namespace NineMensMorris
             adjacent[23].Add(15);
         }
 
+        public bool CanRemove(int boardPos)
+        {
+            return !HasMill(boardPos);
+        }
+
         public Game()
         {
             AvailableMoves = CalculateAvailableMoves().ToArray();
@@ -183,23 +188,46 @@ namespace NineMensMorris
             return result;
         }
 
-        public bool IsValid(Move move)
+        public bool IsValidFromTo(int from, int to)
         {
+            var move = new Move { From = from, To = to };
+
+            if (move.From == move.To)
+                return false;
+
             if (move.To < 0 || move.To >= Board.Length)
                 return false;
             if (move.From < -1 || move.From > Board.Length)
                 return false;
-            if (move.Remove < -1 || move.Remove > Board.Length)
-                return false;
 
             if (Board[move.To] != 0)
                 return false;
-            if (move.From == -1 && AvailableStones[CurrentPlayer - 1] <= 0)
+
+            if (move.From == -1 && AvailableStones[CurrentPlayer - 1] == 0)
                 return false;
+
+            if (move.From != -1 && AvailableStones[CurrentPlayer - 1] != 0)
+                return false;
+            
             if (move.From != -1 && Board[move.From] != CurrentPlayer)
                 return false;
-            if (move.Remove != -1 && (Board[move.Remove] != OtherPlayer || !WillHaveMill(move.From, move.To)))
+
+            return true;
+        }
+
+        public bool IsValid(Move move)
+        {
+            if (!IsValidFromTo(move.From, move.To))
                 return false;
+
+            if (move.Remove < -1 || move.Remove > Board.Length)
+                return false;
+
+            if (move.Remove != -1 && (Board[move.Remove] != OtherPlayer))
+                return false;
+
+            //if (WillHaveMill(move.From, move.To) && move.Remove == -1)
+            //    return false;
 
             return true;
         }

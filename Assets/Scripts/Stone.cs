@@ -44,7 +44,7 @@ public class Stone : MonoBehaviour
         if (owner == 2 && gameManager.MoveState == MoveState.RemoveStone)
         {
             var pos = board.GetNearestPosition(transform.position);
-            if (!game.HasMill(pos.boardPos))
+            if (game.CanRemove(pos.boardPos))
             {
                 board.RemoveStone(pos.boardPos);
                 gameManager.RemoveStone(pos.boardPos);
@@ -66,7 +66,7 @@ public class Stone : MonoBehaviour
             var pos = board.GetNearestPosition(transform.position);
             var canDrop = pos.dist < 3.0f && game.Board[pos.boardPos] == 0;
 
-            if (canDrop)
+            if (canDrop && game.IsValidFromTo(boardPos, pos.boardPos))
             {
                 board.MoveStone(from: boardPos, to: pos.boardPos, gameObject);
                 gameManager.MoveStone(from: boardPos, to: pos.boardPos);
