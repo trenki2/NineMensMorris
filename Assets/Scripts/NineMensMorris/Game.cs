@@ -194,22 +194,19 @@ namespace NineMensMorris
 
             if (move.From == move.To)
                 return false;
-
             if (move.To < 0 || move.To >= Board.Length)
                 return false;
-            if (move.From < -1 || move.From > Board.Length)
+            if (move.From < -1 || move.From >= Board.Length)
                 return false;
-
             if (Board[move.To] != 0)
                 return false;
-
             if (move.From == -1 && AvailableStones[CurrentPlayer - 1] == 0)
                 return false;
-
             if (move.From != -1 && AvailableStones[CurrentPlayer - 1] != 0)
                 return false;
-            
             if (move.From != -1 && Board[move.From] != CurrentPlayer)
+                return false;
+            if (move.From != -1 && StonesOnBoard[CurrentPlayer - 1] > 3 && !adjacent[move.From].Contains(move.To))
                 return false;
 
             return true;
